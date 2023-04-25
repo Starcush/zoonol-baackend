@@ -4,6 +4,10 @@ export default class StoreQuery {
   }
 
   async findStoreList() {
+    /**
+     * note: category 1,2 은 카페와 식당
+     */
+
     const query = this.db
       .select(
         'seq',
@@ -24,7 +28,6 @@ export default class StoreQuery {
         'category_seq'
       )
       .from('n_store')
-      // 당장은 카페와 식당만 취급하기로 결정
       .whereIn('category_seq', [1, 2]);
 
     return await query;
