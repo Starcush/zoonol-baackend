@@ -11,6 +11,7 @@ export default class StoreQuery {
     const query = this.db
       .select(
         'seq',
+        'zoonol_place',
         'naver_store_id',
         'name',
         'sub_category',
@@ -25,7 +26,8 @@ export default class StoreQuery {
         'lat',
         'lng',
         'map_url',
-        'category_seq'
+        'category_seq',
+        'info_updated_at'
       )
       .from('n_store')
       .whereIn('category_seq', [1, 2]);
