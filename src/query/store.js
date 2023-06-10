@@ -1,3 +1,6 @@
+import { toRowsOnBuilder } from '@/common/util';
+import { DatabaseError } from '@/common/error';
+
 export default class StoreQuery {
   constructor({ db }) {
     this.db = db;
@@ -27,12 +30,21 @@ export default class StoreQuery {
         'lng',
         'map_url',
         'category_seq',
-        'info_updated_at'
+        'info_updated_at',
+        'off_leash',
+        'large_dog_available',
+        'thumbnail',
+        'additional_info',
+        'zoonol_feed_url'
       )
       .from('n_store')
       .whereIn('category_seq', [1, 2]);
 
-    return await query;
+    try {
+      return toRowsOnBuilder(await query);
+    } catch (error) {
+      throw new DatabaseError(error);
+    }
   }
 
   async findStoreListByBound() {}
