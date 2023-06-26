@@ -38,7 +38,7 @@ export default class StoreQuery {
         'zoonol_feed_url'
       )
       .from('n_store')
-      .whereIn('category_seq', [1, 2]);
+      .whereIn('category_seq', [1, 2, 7]);
 
     try {
       return toRowsOnBuilder(await query);
