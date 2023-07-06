@@ -8,7 +8,7 @@ export default class StoreQuery {
 
   async findStoreList() {
     /**
-     * note: category 1,2 은 카페와 식당
+     * note: category 1,2,7  은 카페와 식당, 호프
      */
 
     const query = this.db
@@ -17,9 +17,7 @@ export default class StoreQuery {
         'zoonol_place',
         'naver_store_id',
         'name',
-        'sub_category',
         'phone_number',
-        'working_day',
         'homepage',
         'description',
         'convenience',
