@@ -9,6 +9,7 @@ export default class StoreQuery {
   async findStoreList() {
     /**
      * note: category 1,2,7  은 카페와 식당, 호프
+      @ todo: 유기견 센터도 카테고리에 추가하면 좋을거 같다.
      */
 
     const query = this.db
