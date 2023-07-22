@@ -11,5 +11,14 @@ storeRouter.get('/list', async (ctx) => {
     stores,
   };
 });
+storeRouter.get('/getStore', async (ctx) => {
+  console.log("SHI backend router ctx.request.query :: ", ctx.request.query);
+  console.log("SHI backend router ctx.request.query.name :: ", ctx.request.query.name);
+  const params = ctx.request.query;
+  const stores = await storeDomain.getStore(params);
+  ctx.body = {
+    stores
+  };
+});
 
 export default storeRouter;

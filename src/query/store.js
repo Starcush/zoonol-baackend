@@ -46,4 +46,41 @@ export default class StoreQuery {
   }
 
   async findStoreListByBound() {}
+
+  async getStore(params) {
+    const whereName = params.name;
+    console.log("SHI backend Params ::: ", params);
+    const query = this.db
+      .select(
+        'seq',
+        'zoonol_place',
+        'naver_store_id',
+        'name',
+        'phone_number',
+        'homepage',
+        'description',
+        'convenience',
+        'short_address',
+        'address',
+        'road_address',
+        'lat',
+        'lng',
+        'map_url',
+        'category_seq',
+        'info_updated_at',
+        'off_leash',
+        'large_dog_available',
+        'thumbnail',
+        'additional_info',
+        'zoonol_feed_url'
+      )
+      .from('n_store')
+      .whereIn('name', [whereName]);
+
+    try {
+      return toRowsOnBuilder(await query);
+    } catch (error) {
+      throw new DatabaseError(error);
+    }
+  }
 }
