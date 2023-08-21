@@ -37,3 +37,15 @@ export const toRowsOnBuilder = (knexQueryResult) => {
 
   return camelCaseRows;
 };
+
+export const toInsertKeyOnBuilder = (knexQueryResult) => {
+  if (!knexQueryResult) {
+    return knexQueryResult;
+  }
+
+  if (knexQueryResult.length > 0) {
+    return knexQueryResult[0];
+  }
+
+  return knexQueryResult;
+};

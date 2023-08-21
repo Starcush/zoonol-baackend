@@ -11,8 +11,16 @@ export default class StoreDomain {
 
   async findStoreListByBound() {}
 
-  async getStore(params){
-    console.log("SHI 111 :: ", params);
-    return await this.storeQuery.getStore(params);
+  async getStoreByName(params){
+    return await this.storeQuery.getStoreByName(params);
+  }
+  async insertStore(params){
+    return await this.storeQuery.insertStore(params);
+  }
+  async deleteStoreBySeq(params){
+    return await this.storeQuery.deleteStoreBySeq(params);
+  }
+  async updateStore(params){
+    return await this.storeQuery.updateStore(params);
   }
 }

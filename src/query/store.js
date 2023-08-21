@@ -1,4 +1,4 @@
-import { toRowsOnBuilder } from '@/common/util';
+import { toRowsOnBuilder, toInsertKeyOnBuilder } from '@/common/util';
 import { DatabaseError } from '@/common/error';
 
 export default class StoreQuery {
@@ -47,9 +47,8 @@ export default class StoreQuery {
 
   async findStoreListByBound() {}
 
-  async getStore(params) {
+  async getStoreByName(params) {
     const whereName = params.name;
-    console.log("SHI backend Params ::: ", params);
     const query = this.db
       .select(
         'seq',
@@ -75,10 +74,95 @@ export default class StoreQuery {
         'zoonol_feed_url'
       )
       .from('n_store')
-      .whereIn('name', [whereName]);
+      .whereLike('name', `%${whereName}%`);
 
     try {
       return toRowsOnBuilder(await query);
+    } catch (error) {
+      throw new DatabaseError(error);
+    }
+  }
+  async insertStore(params) {
+    const storeInfo = params.storeInfo;
+    const query = this.db
+    .insert(
+      [
+        {
+          zoonol_place: storeInfo.place,
+          naver_store_id: storeInfo.storeId,
+          name: storeInfo.name,
+          phone_number: storeInfo.phoneNumber,
+          homepage: storeInfo.homepage,
+          description: storeInfo.description,
+          convenience: storeInfo.convenience,
+          short_address: storeInfo.shortAddress,
+          address: storeInfo.address,
+          road_address: storeInfo.roadAddress,
+          lat: storeInfo.lat,
+          lng: storeInfo.lng,
+          map_url: storeInfo.mapUrl,
+          category_seq: storeInfo.categorySeq,
+          // info_updated_at: storeInfo.infoUpdatedAt,
+          info_updated_at: null,
+          off_leash: storeInfo.offLeash,
+          large_dog_available: storeInfo.largeDog,
+          thumbnail: storeInfo.thumbnail,
+          additional_info: storeInfo.additionalInfo,
+          zoonol_feed_url: null
+        }
+      ]
+    )
+    .into('n_store')
+    try {
+      return toInsertKeyOnBuilder(await query);
+    } catch (error) {
+      throw new DatabaseError(error);
+    }
+  }
+  async deleteStoreBySeq(params) {
+    const whereSeq = params.seq;
+    const query = this.db
+      .del()
+      .from('n_store')
+      .where('seq', `${whereSeq}`)
+    try {
+      return toInsertKeyOnBuilder(await query);
+    } catch (error) {
+      throw new DatabaseError(error);
+    }
+  }
+  async updateStore(params) {
+    const storeInfo = params.storeInfo;
+    const query = this.db
+    .update(
+      {
+        zoonol_place: storeInfo.place,
+        naver_store_id: storeInfo.storeId,
+        name: storeInfo.name,
+        phone_number: storeInfo.phoneNumber,
+        homepage: storeInfo.homepage,
+        description: storeInfo.description,
+        convenience: storeInfo.convenience,
+        short_address: storeInfo.shortAddress,
+        address: storeInfo.address,
+        road_address: storeInfo.roadAddress,
+        lat: storeInfo.lat,
+        lng: storeInfo.lng,
+        map_url: storeInfo.mapUrl,
+        category_seq: storeInfo.categorySeq,
+        // info_updated_at: storeInfo.infoUpdatedAt,
+        info_updated_at: null,
+        off_leash: storeInfo.offLeash,
+        large_dog_available: storeInfo.largeDog,
+        thumbnail: storeInfo.thumbnail,
+        additional_info: storeInfo.additionalInfo,
+        zoonol_feed_url: null
+      }
+    )
+    .from('n_store')
+    .where('seq', `${storeInfo.storeSeq}`)
+    try {
+      return toInsertKeyOnBuilder(await query);
     } catch (error) {
       throw new DatabaseError(error);
     }

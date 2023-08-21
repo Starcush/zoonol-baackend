@@ -11,11 +11,30 @@ storeRouter.get('/list', async (ctx) => {
     stores,
   };
 });
-storeRouter.get('/getStore', async (ctx) => {
-  console.log("SHI backend router ctx.request.query :: ", ctx.request.query);
-  console.log("SHI backend router ctx.request.query.name :: ", ctx.request.query.name);
+storeRouter.get('/list-by-name', async (ctx) => {
   const params = ctx.request.query;
-  const stores = await storeDomain.getStore(params);
+  const stores = await storeDomain.getStoreByName(params);
+  ctx.body = {
+    stores
+  };
+});
+storeRouter.post('/insert-store', async (ctx) => {
+  const params = ctx.request.body.params;
+  const stores = await storeDomain.insertStore(params);
+  ctx.body = {
+    stores
+  };
+});
+storeRouter.get('/delete-by-seq', async (ctx) => {
+  const params = ctx.request.query;
+  const stores = await storeDomain.deleteStoreBySeq(params);
+  ctx.body = {
+    stores
+  };
+});
+storeRouter.post('/update-store', async (ctx) => {
+  const params = ctx.request.body.params;
+  const stores = await storeDomain.updateStore(params);
   ctx.body = {
     stores
   };
