@@ -74,7 +74,7 @@ export default class StoreQuery {
         'zoonol_feed_url'
       )
       .from('n_store')
-      .whereLike('name', `%${whereName}%`);
+      .where('name', 'like', `%${whereName}%`);
 
     try {
       return toRowsOnBuilder(await query);
