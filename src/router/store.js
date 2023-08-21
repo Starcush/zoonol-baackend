@@ -15,28 +15,28 @@ storeRouter.get('/list-by-name', async (ctx) => {
   const params = ctx.request.query;
   const stores = await storeDomain.getStoreByName(params);
   ctx.body = {
-    stores
+    stores,
   };
 });
 storeRouter.post('/insert-store', async (ctx) => {
   const params = ctx.request.body.params;
   const stores = await storeDomain.insertStore(params);
   ctx.body = {
-    stores
+    stores,
   };
 });
 storeRouter.get('/delete-by-seq', async (ctx) => {
   const params = ctx.request.query;
   const stores = await storeDomain.deleteStoreBySeq(params);
   ctx.body = {
-    stores
+    stores,
   };
 });
 storeRouter.post('/update-store', async (ctx) => {
   const params = ctx.request.body.params;
   const stores = await storeDomain.updateStore(params);
   ctx.body = {
-    stores
+    stores,
   };
 });
 

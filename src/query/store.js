@@ -85,8 +85,7 @@ export default class StoreQuery {
   async insertStore(params) {
     const storeInfo = params.storeInfo;
     const query = this.db
-    .insert(
-      [
+      .insert([
         {
           zoonol_place: storeInfo.place,
           naver_store_id: storeInfo.storeId,
@@ -108,11 +107,10 @@ export default class StoreQuery {
           large_dog_available: storeInfo.largeDog,
           thumbnail: storeInfo.thumbnail,
           additional_info: storeInfo.additionalInfo,
-          zoonol_feed_url: null
-        }
-      ]
-    )
-    .into('n_store')
+          zoonol_feed_url: null,
+        },
+      ])
+      .into('n_store');
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
@@ -121,10 +119,7 @@ export default class StoreQuery {
   }
   async deleteStoreBySeq(params) {
     const whereSeq = params.seq;
-    const query = this.db
-      .del()
-      .from('n_store')
-      .where('seq', `${whereSeq}`)
+    const query = this.db.del().from('n_store').where('seq', `${whereSeq}`);
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
@@ -134,8 +129,7 @@ export default class StoreQuery {
   async updateStore(params) {
     const storeInfo = params.storeInfo;
     const query = this.db
-    .update(
-      {
+      .update({
         zoonol_place: storeInfo.place,
         naver_store_id: storeInfo.storeId,
         name: storeInfo.name,
@@ -156,11 +150,10 @@ export default class StoreQuery {
         large_dog_available: storeInfo.largeDog,
         thumbnail: storeInfo.thumbnail,
         additional_info: storeInfo.additionalInfo,
-        zoonol_feed_url: null
-      }
-    )
-    .from('n_store')
-    .where('seq', `${storeInfo.storeSeq}`)
+        zoonol_feed_url: null,
+      })
+      .from('n_store')
+      .where('seq', `${storeInfo.storeSeq}`);
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {

@@ -11,16 +11,16 @@ export default class StoreDomain {
 
   async findStoreListByBound() {}
 
-  async getStoreByName(params){
+  async getStoreByName(params) {
     return await this.storeQuery.getStoreByName(params);
   }
-  async insertStore(params){
+  async insertStore(params) {
     return await this.storeQuery.insertStore(params);
   }
-  async deleteStoreBySeq(params){
+  async deleteStoreBySeq(params) {
     return await this.storeQuery.deleteStoreBySeq(params);
   }
-  async updateStore(params){
+  async updateStore(params) {
     return await this.storeQuery.updateStore(params);
   }
 }
