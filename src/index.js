@@ -1,8 +1,8 @@
-import "./dotenv";
-import Koa from "koa";
-import cors from "@koa/cors";
-import bodyParser from "koa-bodyparser";
-import router from "@/router/index";
+import './dotenv';
+import Koa from 'koa';
+import cors from '@koa/cors';
+import bodyParser from 'koa-bodyparser';
+import router from '@/router/index';
 
 const { SERVER_PORT } = process.env;
 

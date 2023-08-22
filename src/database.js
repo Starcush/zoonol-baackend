@@ -1,6 +1,6 @@
-import knex from "knex";
-import fs from "fs";
-import path from "path";
+import knex from 'knex';
+import fs from 'fs';
+import path from 'path';
 
 const {
   DATABASE_HOST,
@@ -12,7 +12,7 @@ const {
 } = process.env;
 
 const dbConfig = {
-  client: "mysql",
+  client: 'mysql',
   connection: {
     host: DATABASE_HOST,
     port: DATABASE_PORT,
@@ -24,9 +24,7 @@ const dbConfig = {
 
 if (DATABASE_CA_FILENAME) {
   dbConfig.connection.ssl = {
-    ca: fs.readFileSync(
-      path.join(__dirname, `../resources/${DATABASE_CA_FILENAME}`),
-    ),
+    ca: fs.readFileSync(path.join(__dirname, `../resources/${DATABASE_CA_FILENAME}`)),
   };
 }
 

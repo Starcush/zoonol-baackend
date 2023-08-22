@@ -1,5 +1,5 @@
-import { toRowsOnBuilder, toInsertKeyOnBuilder } from "@/common/util";
-import { DatabaseError } from "@/common/error";
+import { toRowsOnBuilder, toInsertKeyOnBuilder } from '@/common/util';
+import { DatabaseError } from '@/common/error';
 
 export default class StoreQuery {
   constructor({ db }) {
@@ -13,30 +13,30 @@ export default class StoreQuery {
 
     const query = this.db
       .select(
-        "seq",
-        "zoonol_place",
-        "naver_store_id",
-        "name",
-        "phone_number",
-        "homepage",
-        "description",
-        "convenience",
-        "short_address",
-        "address",
-        "road_address",
-        "lat",
-        "lng",
-        "map_url",
-        "category_seq",
-        "info_updated_at",
-        "off_leash",
-        "large_dog_available",
-        "thumbnail",
-        "additional_info",
-        "zoonol_feed_url",
+        'seq',
+        'zoonol_place',
+        'naver_store_id',
+        'name',
+        'phone_number',
+        'homepage',
+        'description',
+        'convenience',
+        'short_address',
+        'address',
+        'road_address',
+        'lat',
+        'lng',
+        'map_url',
+        'category_seq',
+        'info_updated_at',
+        'off_leash',
+        'large_dog_available',
+        'thumbnail',
+        'additional_info',
+        'zoonol_feed_url'
       )
-      .from("n_store")
-      .whereIn("category_seq", [1, 2, 7]);
+      .from('n_store')
+      .whereIn('category_seq', [1, 2, 7]);
 
     try {
       return toRowsOnBuilder(await query);
@@ -51,30 +51,30 @@ export default class StoreQuery {
     const whereName = params.name;
     const query = this.db
       .select(
-        "seq",
-        "zoonol_place",
-        "naver_store_id",
-        "name",
-        "phone_number",
-        "homepage",
-        "description",
-        "convenience",
-        "short_address",
-        "address",
-        "road_address",
-        "lat",
-        "lng",
-        "map_url",
-        "category_seq",
-        "info_updated_at",
-        "off_leash",
-        "large_dog_available",
-        "thumbnail",
-        "additional_info",
-        "zoonol_feed_url",
+        'seq',
+        'zoonol_place',
+        'naver_store_id',
+        'name',
+        'phone_number',
+        'homepage',
+        'description',
+        'convenience',
+        'short_address',
+        'address',
+        'road_address',
+        'lat',
+        'lng',
+        'map_url',
+        'category_seq',
+        'info_updated_at',
+        'off_leash',
+        'large_dog_available',
+        'thumbnail',
+        'additional_info',
+        'zoonol_feed_url'
       )
-      .from("n_store")
-      .where("name", "like", `%${whereName}%`);
+      .from('n_store')
+      .where('name', 'like', `%${whereName}%`);
 
     try {
       return toRowsOnBuilder(await query);
@@ -110,7 +110,7 @@ export default class StoreQuery {
           zoonol_feed_url: null,
         },
       ])
-      .into("n_store");
+      .into('n_store');
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
@@ -119,7 +119,7 @@ export default class StoreQuery {
   }
   async deleteStoreBySeq(params) {
     const whereSeq = params.seq;
-    const query = this.db.del().from("n_store").where("seq", `${whereSeq}`);
+    const query = this.db.del().from('n_store').where('seq', `${whereSeq}`);
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
@@ -152,8 +152,8 @@ export default class StoreQuery {
         additional_info: storeInfo.additionalInfo,
         zoonol_feed_url: null,
       })
-      .from("n_store")
-      .where("seq", `${storeInfo.storeSeq}`);
+      .from('n_store')
+      .where('seq', `${storeInfo.storeSeq}`);
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
