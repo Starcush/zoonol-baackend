@@ -1,5 +1,5 @@
-import Joi from 'joi';
-import { InvalidParameterError } from '@/common/error';
+import Joi from "joi";
+import { InvalidParameterError } from "@/common/error";
 
 export const validateCtx = (schema, ctx) => {
   const params = {
@@ -12,7 +12,7 @@ export const validateCtx = (schema, ctx) => {
   if (error) {
     const { details } = error;
     const message =
-      details.length > 0 ? details[0].message : '요청 값 오류 입니다.';
+      details.length > 0 ? details[0].message : "요청 값 오류 입니다.";
 
     throw new InvalidParameterError(message, 400);
   }
@@ -28,11 +28,11 @@ export const validateParams = (schema, parameters = {}, callerName) => {
   if (error) {
     const { details } = error;
     const message =
-      details.length > 0 ? details[0].message : '요청 값 오류 입니다.';
+      details.length > 0 ? details[0].message : "요청 값 오류 입니다.";
 
     throw new InvalidParameterError(
-      `${message}${callerName ? ` at ${callerName}` : ''}`,
-      500
+      `${message}${callerName ? ` at ${callerName}` : ""}`,
+      500,
     );
   }
 

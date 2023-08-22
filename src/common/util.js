@@ -1,11 +1,11 @@
-import _ from 'lodash';
-import { InvalidParameterError } from './error';
+import _ from "lodash";
+import { InvalidParameterError } from "./error";
 
 export const toCamelCase = (params) => {
   if (_.isUndefined(params) || _.isNull(params)) {
     throw new InvalidParameterError(
-      'invalid parameter error: toCamelCase()',
-      500
+      "invalid parameter error: toCamelCase()",
+      500,
     );
   }
 
@@ -25,8 +25,8 @@ export const toCamelCase = (params) => {
 export const toRowsOnBuilder = (knexQueryResult) => {
   if (!knexQueryResult) {
     throw new InvalidParameterError(
-      'invalid parameter error: toRowsOnBuilder()',
-      500
+      "invalid parameter error: toRowsOnBuilder()",
+      500,
     );
   }
 

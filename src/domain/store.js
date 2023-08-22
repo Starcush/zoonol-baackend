@@ -1,4 +1,4 @@
-import StoreQuery from '@/query/store';
+import StoreQuery from "@/query/store";
 
 export default class StoreDomain {
   constructor({ db }) {
