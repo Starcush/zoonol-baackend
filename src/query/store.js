@@ -1,5 +1,7 @@
-import { toRowsOnBuilder, toInsertKeyOnBuilder } from '@/common/util';
+import Joi from 'joi';
+import { toRowsOnBuilder, toInsertKeyOnBuilder, toSnakeCase } from '@/common/util';
 import { DatabaseError } from '@/common/error';
+import { validateParams } from '@/common/validator';
 
 export default class StoreQuery {
   constructor({ db }) {
@@ -48,7 +50,12 @@ export default class StoreQuery {
   async findStoreListByBound() {}
 
   async getStoreByName(params) {
-    const whereName = params.name;
+    const { name } = validateParams(
+      {
+        name: Joi.string().required(),
+      },
+      params
+    );
     const query = this.db
       .select(
         'seq',
@@ -74,7 +81,7 @@ export default class StoreQuery {
         'zoonol_feed_url'
       )
       .from('n_store')
-      .where('name', 'like', `%${whereName}%`);
+      .where('name', 'like', name);
 
     try {
       return toRowsOnBuilder(await query);
@@ -83,34 +90,33 @@ export default class StoreQuery {
     }
   }
   async insertStore(params) {
-    const storeInfo = params.storeInfo;
-    const query = this.db
-      .insert([
-        {
-          zoonol_place: storeInfo.place,
-          naver_store_id: storeInfo.storeId,
-          name: storeInfo.name,
-          phone_number: storeInfo.phoneNumber,
-          homepage: storeInfo.homepage,
-          description: storeInfo.description,
-          convenience: storeInfo.convenience,
-          short_address: storeInfo.shortAddress,
-          address: storeInfo.address,
-          road_address: storeInfo.roadAddress,
-          lat: storeInfo.lat,
-          lng: storeInfo.lng,
-          map_url: storeInfo.mapUrl,
-          category_seq: storeInfo.categorySeq,
-          // info_updated_at: storeInfo.infoUpdatedAt,
-          info_updated_at: null,
-          off_leash: storeInfo.offLeash,
-          large_dog_available: storeInfo.largeDog,
-          thumbnail: storeInfo.thumbnail,
-          additional_info: storeInfo.additionalInfo,
-          zoonol_feed_url: null,
-        },
-      ])
-      .into('n_store');
+    const validation = validateParams(
+      {
+        name: Joi.string().required(),
+        needCage: Joi.boolean().allow(null),
+        zoonolPlace: Joi.boolean().allow(null),
+        offLeash: Joi.boolean().allow(null),
+        largeDogAvailable: Joi.boolean().allow(null),
+        lat: Joi.number().allow(null).allow(0),
+        lng: Joi.number().allow(null).allow(0),
+        categorySeq: Joi.number().integer().allow(null).allow(0),
+        naverStoreId: Joi.number().allow(null).allow(0),
+        homepage: Joi.string().allow(null).allow(''),
+        phoneNumber: Joi.string().allow(null).allow(''),
+        description: Joi.string().allow(null).allow(''),
+        convenience: Joi.string().allow(null).allow(''),
+        shortAddress: Joi.string().allow(null).allow(''),
+        address: Joi.string().allow(null).allow(''),
+        roadAddress: Joi.string().allow(null).allow(''),
+        mapUrl: Joi.string().allow(null).allow(''),
+        thumbnail: Joi.string().allow(null).allow(''),
+        zoonolFeedUrl: Joi.string().allow(null).allow(''),
+        additionalInfo: Joi.string().allow(null).allow(''),
+      },
+      params
+    );
+
+    const query = this.db.insert(toSnakeCase(validation)).into('n_store');
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
@@ -118,8 +124,13 @@ export default class StoreQuery {
     }
   }
   async deleteStoreBySeq(params) {
-    const whereSeq = params.seq;
-    const query = this.db.del().from('n_store').where('seq', `${whereSeq}`);
+    const { seq } = validateParams(
+      {
+        seq: Joi.number().integer(),
+      },
+      params
+    );
+    const query = this.db.del().from('n_store').where('seq', seq);
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
@@ -127,33 +138,36 @@ export default class StoreQuery {
     }
   }
   async updateStore(params) {
-    const storeInfo = params.storeInfo;
+    const validation = validateParams(
+      {
+        seq: Joi.number().integer().required(),
+        name: Joi.string().required(),
+        needCage: Joi.boolean().allow(null),
+        zoonolPlace: Joi.boolean().allow(null),
+        offLeash: Joi.boolean().allow(null),
+        largeDogAvailable: Joi.boolean().allow(null),
+        lat: Joi.number().allow(null).allow(0),
+        lng: Joi.number().allow(null).allow(0),
+        categorySeq: Joi.number().integer().allow(null).allow(0),
+        naverStoreId: Joi.number().allow(null).allow(0),
+        homepage: Joi.string().allow(null).allow(''),
+        phoneNumber: Joi.string().allow(null).allow(''),
+        description: Joi.string().allow(null).allow(''),
+        convenience: Joi.string().allow(null).allow(''),
+        shortAddress: Joi.string().allow(null).allow(''),
+        address: Joi.string().allow(null).allow(''),
+        roadAddress: Joi.string().allow(null).allow(''),
+        mapUrl: Joi.string().allow(null).allow(''),
+        thumbnail: Joi.string().allow(null).allow(''),
+        zoonolFeedUrl: Joi.string().allow(null).allow(''),
+        additionalInfo: Joi.string().allow(null).allow(''),
+      },
+      params
+    );
     const query = this.db
-      .update({
-        zoonol_place: storeInfo.place,
-        naver_store_id: storeInfo.storeId,
-        name: storeInfo.name,
-        phone_number: storeInfo.phoneNumber,
-        homepage: storeInfo.homepage,
-        description: storeInfo.description,
-        convenience: storeInfo.convenience,
-        short_address: storeInfo.shortAddress,
-        address: storeInfo.address,
-        road_address: storeInfo.roadAddress,
-        lat: storeInfo.lat,
-        lng: storeInfo.lng,
-        map_url: storeInfo.mapUrl,
-        category_seq: storeInfo.categorySeq,
-        // info_updated_at: storeInfo.infoUpdatedAt,
-        info_updated_at: null,
-        off_leash: storeInfo.offLeash,
-        large_dog_available: storeInfo.largeDog,
-        thumbnail: storeInfo.thumbnail,
-        additional_info: storeInfo.additionalInfo,
-        zoonol_feed_url: null,
-      })
+      .update(toSnakeCase(validation))
       .from('n_store')
-      .where('seq', `${storeInfo.storeSeq}`);
+      .where('seq', validation.seq);
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {

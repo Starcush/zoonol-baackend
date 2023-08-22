@@ -19,6 +19,25 @@ export const toCamelCase = (params) => {
   return params;
 };
 
+export const toSnakeCase = (params) => {
+  if (_.isUndefined(params) || _.isNull(params)) {
+    throw new InvalidParameterError('invalid parameter error: toSnakeCase()', 500);
+  }
+
+  _.isObject;
+  if (_.isObject(params)) {
+    return _.mapKeys(params, (value, key) => {
+      return _.snakeCase(key);
+    });
+  }
+
+  if (_.isString(params)) {
+    return _.snakeCase(params);
+  }
+
+  return params;
+};
+
 export const toRowsOnBuilder = (knexQueryResult) => {
   if (!knexQueryResult) {
     throw new InvalidParameterError('invalid parameter error: toRowsOnBuilder()', 500);
