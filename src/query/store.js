@@ -62,6 +62,7 @@ export default class StoreQuery {
         'zoonol_place',
         'naver_store_id',
         'name',
+        'need_cage',
         'phone_number',
         'homepage',
         'description',
@@ -73,7 +74,7 @@ export default class StoreQuery {
         'lng',
         'map_url',
         'category_seq',
-        'info_updated_at',
+        // 'info_updated_at',
         'off_leash',
         'large_dog_available',
         'thumbnail',
@@ -81,7 +82,7 @@ export default class StoreQuery {
         'zoonol_feed_url'
       )
       .from('n_store')
-      .where('name', 'like', name);
+      .where('name', 'like', `%${name}%`);
 
     try {
       return toRowsOnBuilder(await query);
@@ -93,10 +94,10 @@ export default class StoreQuery {
     const validation = validateParams(
       {
         name: Joi.string().required(),
-        needCage: Joi.boolean().allow(null),
-        zoonolPlace: Joi.boolean().allow(null),
-        offLeash: Joi.boolean().allow(null),
-        largeDogAvailable: Joi.boolean().allow(null),
+        needCage: Joi.number().integer().allow(null).allow(0),
+        zoonolPlace: Joi.number().integer().allow(null).allow(0),
+        offLeash: Joi.number().integer().allow(null).allow(0),
+        largeDogAvailable: Joi.number().integer().allow(null).allow(0),
         lat: Joi.number().allow(null).allow(0),
         lng: Joi.number().allow(null).allow(0),
         categorySeq: Joi.number().integer().allow(null).allow(0),
@@ -142,10 +143,10 @@ export default class StoreQuery {
       {
         seq: Joi.number().integer().required(),
         name: Joi.string().required(),
-        needCage: Joi.boolean().allow(null),
-        zoonolPlace: Joi.boolean().allow(null),
-        offLeash: Joi.boolean().allow(null),
-        largeDogAvailable: Joi.boolean().allow(null),
+        needCage: Joi.number().integer().allow(null).allow(0),
+        zoonolPlace: Joi.number().integer().allow(null).allow(0),
+        offLeash: Joi.number().integer().allow(null).allow(0),
+        largeDogAvailable: Joi.number().integer().allow(null).allow(0),
         lat: Joi.number().allow(null).allow(0),
         lng: Joi.number().allow(null).allow(0),
         categorySeq: Joi.number().integer().allow(null).allow(0),
@@ -161,6 +162,9 @@ export default class StoreQuery {
         thumbnail: Joi.string().allow(null).allow(''),
         zoonolFeedUrl: Joi.string().allow(null).allow(''),
         additionalInfo: Joi.string().allow(null).allow(''),
+        
+        // todo : infoUpdatedAt 삭제 예정
+        // infoUpdatedAt: Joi.string().allow(null).allow(''),
       },
       params
     );
@@ -171,7 +175,8 @@ export default class StoreQuery {
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
-      throw new DatabaseError(error);
+      // throw new DatabaseError(error);
+      console.log("SHI error ::: ", error);
     }
   }
 }

@@ -26,10 +26,10 @@ export default class StoreDomain {
     const validation = validateParams(
       {
         name: Joi.string().required(),
-        needCage: Joi.boolean().allow(null),
-        zoonolPlace: Joi.boolean().allow(null),
-        offLeash: Joi.boolean().allow(null),
-        largeDogAvailable: Joi.boolean().allow(null),
+        needCage: Joi.number().integer().allow(null).allow(0),
+        zoonolPlace: Joi.number().integer().allow(null).allow(0),
+        offLeash: Joi.number().integer().allow(null).allow(0),
+        largeDogAvailable: Joi.number().integer().allow(null).allow(0),
         lat: Joi.number().allow(null).allow(0),
         lng: Joi.number().allow(null).allow(0),
         categorySeq: Joi.number().integer().allow(null).allow(0),
@@ -64,10 +64,10 @@ export default class StoreDomain {
       {
         seq: Joi.number().integer().required(),
         name: Joi.string().required(),
-        needCage: Joi.boolean().allow(null),
-        zoonolPlace: Joi.boolean().allow(null),
-        offLeash: Joi.boolean().allow(null),
-        largeDogAvailable: Joi.boolean().allow(null),
+        needCage: Joi.number().integer().allow(null).allow(0),
+        zoonolPlace: Joi.number().integer().allow(null).allow(0),
+        offLeash: Joi.number().integer().allow(null).allow(0),
+        largeDogAvailable: Joi.number().integer().allow(null).allow(0),
         lat: Joi.number().allow(null).allow(0),
         lng: Joi.number().allow(null).allow(0),
         categorySeq: Joi.number().integer().allow(null).allow(0),
@@ -83,6 +83,9 @@ export default class StoreDomain {
         thumbnail: Joi.string().allow(null).allow(''),
         zoonolFeedUrl: Joi.string().allow(null).allow(''),
         additionalInfo: Joi.string().allow(null).allow(''),
+
+        // todo : infoUpdatedAt 삭제 예정
+        // infoUpdatedAt: Joi.string().allow(null).allow(''),
       },
       params
     );
