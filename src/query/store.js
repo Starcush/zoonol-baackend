@@ -19,6 +19,7 @@ export default class StoreQuery {
         'zoonol_place',
         'naver_store_id',
         'name',
+        'need_cage',
         'phone_number',
         'homepage',
         'description',
@@ -30,7 +31,7 @@ export default class StoreQuery {
         'lng',
         'map_url',
         'category_seq',
-        'info_updated_at',
+        // 'info_updated_at',
         'off_leash',
         'large_dog_available',
         'thumbnail',
@@ -162,7 +163,7 @@ export default class StoreQuery {
         thumbnail: Joi.string().allow(null).allow(''),
         zoonolFeedUrl: Joi.string().allow(null).allow(''),
         additionalInfo: Joi.string().allow(null).allow(''),
-        
+
         // todo : infoUpdatedAt 삭제 예정
         // infoUpdatedAt: Joi.string().allow(null).allow(''),
       },
@@ -176,7 +177,7 @@ export default class StoreQuery {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
       // throw new DatabaseError(error);
-      console.log("SHI error ::: ", error);
+      console.log('SHI error ::: ', error);
     }
   }
 }
