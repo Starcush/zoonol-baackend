@@ -176,8 +176,7 @@ export default class StoreQuery {
     try {
       return toInsertKeyOnBuilder(await query);
     } catch (error) {
-      // throw new DatabaseError(error);
-      console.log('SHI error ::: ', error);
+      throw new DatabaseError(error);
     }
   }
 }
