@@ -11,6 +11,7 @@ export default class StoreQuery {
   async findStoreList() {
     /**
      * note: category 1,2,7  은 카페와 식당, 호프
+     * 서점도 추가할 것
      */
 
     const query = this.db
@@ -95,10 +96,10 @@ export default class StoreQuery {
     const validation = validateParams(
       {
         name: Joi.string().required(),
-        needCage: Joi.number().integer().allow(null).allow(0),
-        zoonolPlace: Joi.number().integer().allow(null).allow(0),
-        offLeash: Joi.number().integer().allow(null).allow(0),
-        largeDogAvailable: Joi.number().integer().allow(null).allow(0),
+        needCage: Joi.boolean().allow(null).allow(0),
+        zoonolPlace: Joi.boolean().allow(null).allow(0),
+        offLeash: Joi.boolean().allow(null).allow(0),
+        largeDogAvailable: Joi.boolean().allow(null).allow(0),
         lat: Joi.number().allow(null).allow(0),
         lng: Joi.number().allow(null).allow(0),
         categorySeq: Joi.number().integer().allow(null).allow(0),
@@ -144,10 +145,10 @@ export default class StoreQuery {
       {
         seq: Joi.number().integer().required(),
         name: Joi.string().required(),
-        needCage: Joi.number().integer().allow(null).allow(0),
-        zoonolPlace: Joi.number().integer().allow(null).allow(0),
-        offLeash: Joi.number().integer().allow(null).allow(0),
-        largeDogAvailable: Joi.number().integer().allow(null).allow(0),
+        needCage: Joi.boolean().allow(null).allow(0),
+        zoonolPlace: Joi.boolean().allow(null).allow(0),
+        offLeash: Joi.boolean().allow(null).allow(0),
+        largeDogAvailable: Joi.boolean().allow(null).allow(0),
         lat: Joi.number().allow(null).allow(0),
         lng: Joi.number().allow(null).allow(0),
         categorySeq: Joi.number().integer().allow(null).allow(0),
@@ -163,9 +164,6 @@ export default class StoreQuery {
         thumbnail: Joi.string().allow(null).allow(''),
         zoonolFeedUrl: Joi.string().allow(null).allow(''),
         additionalInfo: Joi.string().allow(null).allow(''),
-
-        // todo : infoUpdatedAt 삭제 예정
-        // infoUpdatedAt: Joi.string().allow(null).allow(''),
       },
       params
     );
