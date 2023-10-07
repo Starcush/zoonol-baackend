@@ -26,7 +26,6 @@ storeRouter.get('/list-by-name', async (ctx) => {
   };
 });
 storeRouter.post('/insert-store', async (ctx) => {
-  console.log('ctx: ', ctx.request.body);
   // todo: 안쓰는 데이터 확인해서 지우는거 필요함
   const validation = validateCtx(
     {
