@@ -24,9 +24,7 @@ const dbConfig = {
 
 if (DATABASE_CA_FILENAME) {
   dbConfig.connection.ssl = {
-    ca: fs.readFileSync(
-      path.join(__dirname, `../resources/${DATABASE_CA_FILENAME}`)
-    ),
+    ca: fs.readFileSync(path.join(__dirname, `../resources/${DATABASE_CA_FILENAME}`)),
   };
 }
 
