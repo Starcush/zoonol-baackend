@@ -32,8 +32,6 @@ storeRouter.post('/', upload.single('thumbnail'), async (ctx) => {
   let thumbnail = '';
   if (file) {
     thumbnail = `${process.env.DO_BUCKET_PUBLIC_URL_STORE}/${file.key}`;
-  } else {
-    ctx.status = 400;
   }
 
   // todo: 안쓰는 데이터 확인해서 지우는거 필요함
