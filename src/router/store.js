@@ -3,6 +3,7 @@ import Router from '@koa/router';
 import StoreDomain from '@/domain/store';
 import db from '@/database';
 import { validateCtx } from '@/common/validator';
+import { upload } from '@/common/imageupload';
 
 const storeRouter = new Router();
 const storeDomain = new StoreDomain({ db });
@@ -25,7 +26,14 @@ storeRouter.get('/list-by-name', async (ctx) => {
     stores,
   };
 });
-storeRouter.post('/insert-store', async (ctx) => {
+
+storeRouter.post('/', upload.single('thumbnail'), async (ctx) => {
+  const { file } = ctx;
+  let thumbnail = '';
+  if (file) {
+    thumbnail = `${process.env.DO_BUCKET_PUBLIC_URL_STORE}/${file.key}`;
+  }
+
   // todo: 안쓰는 데이터 확인해서 지우는거 필요함
   const validation = validateCtx(
     {
@@ -46,16 +54,17 @@ storeRouter.post('/insert-store', async (ctx) => {
       address: Joi.string().allow(null).allow(''),
       roadAddress: Joi.string().allow(null).allow(''),
       mapUrl: Joi.string().allow(null).allow(''),
-      thumbnail: Joi.string().allow(null).allow(''),
       zoonolFeedUrl: Joi.string().allow(null).allow(''),
       additionalInfo: Joi.string().allow(null).allow(''),
     },
     ctx
   );
 
-  const stores = await storeDomain.insertStore(validation);
+  const id = await storeDomain.insertStore({ ...validation, thumbnail });
+
+  ctx.status = 201;
   ctx.body = {
-    stores,
+    id,
   };
 });
 storeRouter.get('/delete-by-seq', async (ctx) => {
@@ -70,7 +79,13 @@ storeRouter.get('/delete-by-seq', async (ctx) => {
     stores,
   };
 });
-storeRouter.post('/update-store', async (ctx) => {
+storeRouter.patch('/', upload.single('thumbnail'), async (ctx) => {
+  const { file } = ctx;
+  let newThumbnail = '';
+  if (file) {
+    newThumbnail = `${process.env.DO_BUCKET_PUBLIC_URL_STORE}/${file.key}`;
+  }
+
   const validation = validateCtx(
     {
       seq: Joi.number().integer().required(),
@@ -100,7 +115,10 @@ storeRouter.post('/update-store', async (ctx) => {
     },
     ctx
   );
-  const stores = await storeDomain.updateStore(validation);
+  const stores = await storeDomain.updateStore({
+    ...validation,
+    thumbnail: newThumbnail ? newThumbnail : validation?.thumbnail,
+  });
   ctx.body = {
     stores,
   };
