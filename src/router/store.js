@@ -79,7 +79,13 @@ storeRouter.get('/delete-by-seq', async (ctx) => {
     stores,
   };
 });
-storeRouter.post('/update-store', async (ctx) => {
+storeRouter.patch('/', upload.single('thumbnail'), async (ctx) => {
+  const { file } = ctx;
+  let newThumbnail = '';
+  if (file) {
+    newThumbnail = `${process.env.DO_BUCKET_PUBLIC_URL_STORE}/${file.key}`;
+  }
+
   const validation = validateCtx(
     {
       seq: Joi.number().integer().required(),
@@ -109,7 +115,10 @@ storeRouter.post('/update-store', async (ctx) => {
     },
     ctx
   );
-  const stores = await storeDomain.updateStore(validation);
+  const stores = await storeDomain.updateStore({
+    ...validation,
+    thumbnail: newThumbnail ? newThumbnail : validation?.thumbnail,
+  });
   ctx.body = {
     stores,
   };
