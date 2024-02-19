@@ -96,10 +96,11 @@ async function getInitialInvestment(spreadsheetId) {
 }
 
 async function insertIndividualAssets({ spreadsheetId, individualAssets, initialInvestment }) {
-  const rows = await getSheetRows(spreadsheetId, '분석(2024)');
-  const today = dayjs().format('YYYY/MM/DD');
-
-  const insertValues = [...individualAssets, initialInvestment, { label: '날짜', value: today }];
+  const convertCurrencyStringToNumber = (currencyString) => {
+    // 통화 기호와 쉼표를 제거하고 숫자로 변환
+    const numberString = currencyString.replace(/[^0-9]/g, '');
+    return parseInt(numberString, 10);
+  };
 
   const insertToSheet = async (label, value) => {
     let targetCell;
@@ -125,7 +126,7 @@ async function insertIndividualAssets({ spreadsheetId, individualAssets, initial
     if (targetCell) {
       console.log(`값을 입력할 셀: ${targetCell}`);
     } else {
-      console.log('평가금액 행을 찾을 수 없거나, 적절한 셀을 찾을 수 없습니다.');
+      console.log(`${label} 행을 찾을 수 없거나, 적절한 셀을 찾을 수 없습니다.`);
     }
 
     if (targetCell) {
@@ -137,11 +138,29 @@ async function insertIndividualAssets({ spreadsheetId, individualAssets, initial
           values: [[value]],
         },
       });
-      console.log(`Value ${value} written to ${targetCell}`);
+      console.log(`Value ${value} written to ${label}`);
     } else {
       console.log('No empty cell found.');
     }
   };
+
+  const rows = await getSheetRows(spreadsheetId, '분석(2024)');
+  const today = dayjs().format('YYYY/MM/DD');
+
+  const valuation = convertCurrencyStringToNumber(
+    individualAssets.find(({ label }) => label === '평가금액').value
+  );
+  const initialInvestmentValue = convertCurrencyStringToNumber(initialInvestment.value);
+
+  const roi = (valuation - initialInvestmentValue) / initialInvestmentValue;
+  const roiPercentage = (roi * 100).toFixed(2) + '%';
+
+  const insertValues = [
+    ...individualAssets,
+    initialInvestment,
+    { label: '날짜', value: today },
+    { label: '수익률', value: roiPercentage },
+  ];
 
   for (const insertValue of insertValues) {
     const { label, value } = insertValue;
